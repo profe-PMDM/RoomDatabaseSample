@@ -28,5 +28,4 @@ interface UserDao {
     @Query("SELECT * FROM users ORDER BY age ASC")
     fun getAllUserOrderedByAge(): List<User>
 
-
 }
