@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import es.davidcorcuera.roomdatabasesample.R
 import es.davidcorcuera.roomdatabasesample.databinding.FragmentAddBinding
 import es.davidcorcuera.roomdatabasesample.model.User
 import es.davidcorcuera.roomdatabasesample.viewmodel.UserViewModel
@@ -15,8 +17,8 @@ class AddFragment : Fragment() {
 
     private lateinit var binding: FragmentAddBinding
 
-    // get viewmodel
-    val userViewModel: UserViewModel by viewModels()
+    // get or instantiate viewmodel (shared between activity and fragments)
+    val userViewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,11 +49,8 @@ class AddFragment : Fragment() {
             )
             // Insert User into Database through viewmodel
             userViewModel.insertUser(newUser)
+            findNavController().navigate(R.id.action_addFragment_to_listFragment)
 
-            // Clear View Inputs
-            binding.name.setText("")
-            binding.surname.setText("")
-            binding.age.setText("")
         } else {
             Toast.makeText(requireContext(), "Please, Fill all fields", Toast.LENGTH_LONG).show()
         }

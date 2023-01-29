@@ -1,31 +1,32 @@
 package es.davidcorcuera.roomdatabasesample.model
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
 interface UserDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertUser(vararg user: User)
+    suspend fun insertUser(vararg user: User)
 
     @Delete
-    fun deleteUser(user: User)
+    suspend fun deleteUser(user: User)
 
     @Update
-    fun updateUser(user: User)
+    suspend fun updateUser(user: User)
 
     @Query("SELECT * FROM users")
-    fun getAllUsers(): List<User>
+    fun getAllUsers(): LiveData<List<User>>
 
     @Query("DELETE FROM users")
-    fun deleteAllUsers()
+    suspend fun deleteAllUsers()
 
     @Query("SELECT * FROM users WHERE first_name = :name")
-    fun getUserByName(name: String): List<User>
+    fun getUserByName(name: String): LiveData<List<User>>
 
     @Query("SELECT * FROM users WHERE age = :age")
-    fun getUsersByAge(age: Int): List<User>
+    fun getUsersByAge(age: Int): LiveData<List<User>>
 
     @Query("SELECT * FROM users ORDER BY age ASC")
-    fun getAllUserOrderedByAge(): List<User>
+    fun getAllUserOrderedByAge(): LiveData<List<User>>
 
 }

@@ -1,45 +1,56 @@
 package es.davidcorcuera.roomdatabasesample.viewmodel
 
 import android.app.Application
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.AndroidViewModel
-import androidx.room.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
 import es.davidcorcuera.roomdatabasesample.model.User
 import es.davidcorcuera.roomdatabasesample.model.UserDao
 import es.davidcorcuera.roomdatabasesample.model.UserDatabase
+import kotlinx.coroutines.launch
 
 class UserViewModel(application: Application): AndroidViewModel(application) {
     private val database: UserDao = UserDatabase.getInstance(application).userDao()
 
+    val mAllUsers = database.getAllUsers()
+
     fun insertUser(user: User){
-        database.insertUser(user)
+        viewModelScope.launch {
+            database.insertUser(user)
+        }
     }
 
     fun deleteUser(user: User){
-        database.deleteUser(user)
+        viewModelScope.launch {
+            database.deleteUser(user)
+        }
     }
 
     fun updateUser(user: User){
-        database.updateUser(user)
+        viewModelScope.launch {
+            database.updateUser(user)
+        }
     }
 
-    fun getAllUsers(): List<User>{
-        return database.getAllUsers()
+    fun getAllUsers(): LiveData<List<User>>{
+        return mAllUsers
     }
 
     fun deleteAllUsers(){
-        database.deleteAllUsers()
+        viewModelScope.launch {
+            database.deleteAllUsers()
+        }
     }
 
-    fun getUserByName(name: String): List<User>{
+    fun getUserByName(name: String): LiveData<List<User>>{
         return database.getUserByName(name)
     }
 
-    fun getUsersByAge(age: Int): List<User>{
+    fun getUsersByAge(age: Int): LiveData<List<User>>{
         return database.getUsersByAge(age)
     }
 
-    fun getAllUserOrderedByAge(): List<User>{
+    fun getAllUserOrderedByAge(): LiveData<List<User>>{
         return database.getAllUserOrderedByAge()
     }
 
