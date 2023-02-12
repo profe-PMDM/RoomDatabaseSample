@@ -18,7 +18,7 @@ class AddFragment : Fragment() {
     private lateinit var binding: FragmentAddBinding
 
     // get or instantiate viewmodel (shared between activity and fragments)
-    val userViewModel: UserViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +42,7 @@ class AddFragment : Fragment() {
 
         if (allFieldsFilled()) {
             // Instantiate new User from View Inputs
-            val newUser: User = User(
+            val newUser = User(
                 binding.name.text.toString(),
                 binding.surname.text.toString(),
                 binding.age.text.toString().toInt()

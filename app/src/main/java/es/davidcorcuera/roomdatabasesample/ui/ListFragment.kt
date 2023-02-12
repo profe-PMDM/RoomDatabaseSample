@@ -1,53 +1,68 @@
 package es.davidcorcuera.roomdatabasesample.ui
 
 import android.os.Bundle
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import es.davidcorcuera.roomdatabasesample.R
+import es.davidcorcuera.roomdatabasesample.adapter.UserAdapter
 import es.davidcorcuera.roomdatabasesample.databinding.FragmentListBinding
-import es.davidcorcuera.roomdatabasesample.model.User
 import es.davidcorcuera.roomdatabasesample.viewmodel.UserViewModel
 
 class ListFragment : Fragment() {
 
+    // get or instantiate viewmodel (shared between activity and fragments)
+    private val userViewModel: UserViewModel by activityViewModels()
+
     private lateinit var binding: FragmentListBinding
 
-    // get or instantiate viewmodel (shared between activity and fragments)
-    val userViewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+
+       setHasOptionsMenu(true)
+
         // Inflate the layout for this fragment
         binding = FragmentListBinding.inflate(layoutInflater)
-        return binding.root}
+
+        val adapter = UserAdapter()
+        binding.recyclerview.adapter = adapter
+
+        userViewModel.mAllUsers.observe(viewLifecycleOwner) {
+            adapter.setData(it)
+        }
+
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val usersObserver = Observer<List<User>>{
-            updateDisplayText(it)
-        }
-        userViewModel.mAllUsers.observe(viewLifecycleOwner, usersObserver)
-        updateDisplayText(userViewModel.mAllUsers.value)
 
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_listFragment_to_addFragment)
         }
     }
 
-    private fun updateDisplayText(users: List<User>?) {
-        var displayText = ""
-        if (users != null) {
-            for (user in users) {
-                displayText += "${user.name}  ${user.lastName} - ${user.age}\n\n"       }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.main_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        return when (item.itemId) {
+            R.id.action_delete -> {
+                Toast.makeText(activity,"Clearing data...", Toast.LENGTH_LONG).show()
+                userViewModel.deleteAllUsers()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
-        binding.users.text = displayText
     }
 }

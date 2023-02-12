@@ -1,6 +1,7 @@
 package es.davidcorcuera.roomdatabasesample.viewmodel
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -10,6 +11,7 @@ import es.davidcorcuera.roomdatabasesample.model.UserDatabase
 import kotlinx.coroutines.launch
 
 class UserViewModel(application: Application): AndroidViewModel(application) {
+
     private val database: UserDao = UserDatabase.getInstance(application).userDao()
 
     val mAllUsers = database.getAllUsers()
@@ -17,6 +19,7 @@ class UserViewModel(application: Application): AndroidViewModel(application) {
     fun insertUser(user: User){
         viewModelScope.launch {
             database.insertUser(user)
+            Toast.makeText(getApplication(),"Added ${user.name} ${user.lastName}", Toast.LENGTH_LONG).show()
         }
     }
 
