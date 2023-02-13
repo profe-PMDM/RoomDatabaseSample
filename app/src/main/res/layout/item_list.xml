@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="user"
+            type="es.davidcorcuera.roomdatabasesample.model.User" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:textSize="18sp"
+            android:text="@{user.name}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Jose" />
@@ -31,6 +35,7 @@
             android:layout_margin="0dp"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:text="@{user.lastName}"
             app:layout_constraintStart_toStartOf="@+id/name"
             app:layout_constraintTop_toBottomOf="@+id/name"
             tools:text="Lopez" />
@@ -42,6 +47,7 @@
             android:layout_marginEnd="24dp"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:text="@{Integer.toString(user.age)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

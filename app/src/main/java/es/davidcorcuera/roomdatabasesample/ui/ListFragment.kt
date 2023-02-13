@@ -33,7 +33,7 @@ class ListFragment : Fragment() {
         binding.recyclerview.adapter = adapter
 
         userViewModel.mAllUsers.observe(viewLifecycleOwner) {
-            adapter.setData(it)
+            adapter.submitList(it)
         }
 
         return binding.root

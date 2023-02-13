@@ -1,42 +1,37 @@
 package es.davidcorcuera.roomdatabasesample.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import es.davidcorcuera.roomdatabasesample.R
+import es.davidcorcuera.roomdatabasesample.databinding.ItemListBinding
 import es.davidcorcuera.roomdatabasesample.model.User
 
-class UserAdapter(): RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+class UserAdapter(): ListAdapter<User,UserAdapter.UserViewHolder>(RowItemDiffCallback()) {
 
-    private var mUsers: List<User> = listOf()
+    class UserViewHolder(val binding: ItemListBinding): RecyclerView.ViewHolder(binding.root)
 
-    class UserViewHolder(val row: View): RecyclerView.ViewHolder(row) {
-        val name: TextView = row.findViewById(R.id.name)
-        val surname: TextView = row.findViewById(R.id.surname)
-        val age: TextView = row.findViewById(R.id.age)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-        val layout = LayoutInflater
-            .from(parent.context).
-            inflate(R.layout.item_list, parent, false)
-        return UserViewHolder(layout)
+        val layoutInflater = LayoutInflater.from(parent.context)
+        val binding = ItemListBinding.inflate(layoutInflater, parent, false)
+        return UserViewHolder(binding)
     }
-
-    override fun getItemCount() = mUsers.size
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        val user = mUsers[position]
-        holder.name.text = user.name
-        holder.surname.text = user.lastName
-        holder.age.text = user.age.toString()
+        val user = getItem(position)
+        holder.binding.user = user
+    }
+}
+
+class RowItemDiffCallback : DiffUtil.ItemCallback<User>() {
+    override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+        return oldItem == newItem
     }
 
-    fun setData(data: List<User>){
-        mUsers = data
-        notifyDataSetChanged()
+    override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+        return oldItem == newItem
     }
 }
 
