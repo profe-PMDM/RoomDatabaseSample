@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import es.davidcorcuera.roomdatabasesample.databinding.ItemListBinding
 import es.davidcorcuera.roomdatabasesample.model.User
 
-class UserAdapter(): ListAdapter<User,UserAdapter.UserViewHolder>(RowItemDiffCallback()) {
+class UserAdapter(val clickListener: MyListener) : ListAdapter<User, UserAdapter.UserViewHolder>(RowItemDiffCallback()) {
 
-    class UserViewHolder(val binding: ItemListBinding): RecyclerView.ViewHolder(binding.root)
+    class UserViewHolder(val binding: ItemListBinding) : RecyclerView.ViewHolder(binding.root)
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -22,6 +22,7 @@ class UserAdapter(): ListAdapter<User,UserAdapter.UserViewHolder>(RowItemDiffCal
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = getItem(position)
         holder.binding.user = user
+        holder.binding.clickListener = clickListener
     }
 }
 
@@ -33,5 +34,9 @@ class RowItemDiffCallback : DiffUtil.ItemCallback<User>() {
     override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
         return oldItem == newItem
     }
+}
+
+class MyListener(val clickListener: (user: User) -> Unit) {
+    fun onClick(user: User) = clickListener(user)
 }
 

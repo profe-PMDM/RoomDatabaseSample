@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import es.davidcorcuera.roomdatabasesample.R
+import es.davidcorcuera.roomdatabasesample.adapter.MyListener
 import es.davidcorcuera.roomdatabasesample.adapter.UserAdapter
 import es.davidcorcuera.roomdatabasesample.databinding.FragmentListBinding
 import es.davidcorcuera.roomdatabasesample.viewmodel.UserViewModel
@@ -29,7 +30,7 @@ class ListFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentListBinding.inflate(layoutInflater)
 
-        val adapter = UserAdapter()
+        val adapter = UserAdapter(MyListener { user -> userViewModel.deleteUser(user) })
         binding.recyclerview.adapter = adapter
 
         userViewModel.mAllUsers.observe(viewLifecycleOwner) {
