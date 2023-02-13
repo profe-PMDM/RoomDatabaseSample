@@ -22,7 +22,7 @@ class UserAdapter(val clickListener: MyListener) : ListAdapter<User, UserAdapter
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = getItem(position)
         holder.binding.user = user
-        holder.binding.clickListener = clickListener
+        holder.itemView.setOnClickListener { clickListener.onClick(user) }
     }
 }
 

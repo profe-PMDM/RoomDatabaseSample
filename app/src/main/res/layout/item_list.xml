@@ -4,13 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="user"
             type="es.davidcorcuera.roomdatabasesample.model.User" />
-        <variable
-            name="clickListener"
-            type="es.davidcorcuera.roomdatabasesample.adapter.MyListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,8 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:background="#FFEB3B"
-        android:padding="16dp"
-        android:onClick="@{()->clickListener.onClick(user)}">
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/name"
